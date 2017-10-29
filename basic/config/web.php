@@ -10,7 +10,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => '6G11oKxGhBwbyucNwgl7Vzp3PrL5Ger1',
+            'cookieValidationKey' => '8fJeFdbco8gQRGfmlhxc79VV9g0V1le6',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -39,16 +39,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
+    // 模块配置
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
