@@ -13,7 +13,7 @@ use Yii;
 use app\models\admin\User;
 class AdminController extends BaseController
 {
-
+    public $layout = 'mylayout';
     public function actionLogin()
     {
         if(!\Yii::$app->user->isGuest) { //判断当前用户是否为游客
