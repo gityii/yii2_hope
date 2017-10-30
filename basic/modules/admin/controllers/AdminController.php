@@ -7,10 +7,10 @@
  */
 
 namespace app\modules\admin\controllers;
-use app\models\admin\LoginForm;
+use app\modules\admin\models\LoginForm;
 use app\controllers\BaseController;
 use Yii;
-use app\models\admin\User;
+use app\modules\admin\models\User;
 class AdminController extends BaseController
 {
     public $layout = 'mylayout';
