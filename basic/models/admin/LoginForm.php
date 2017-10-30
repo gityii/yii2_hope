@@ -18,11 +18,6 @@ class LoginForm extends Model
     public $rememberMe = true;
     private $_user = false;
 
-    private $user = [
-        'id' => 1,
-        'username' => 'smister',
-        'password' => '123456'
-    ];
     /**
      * @return array the validation rules.
      */
@@ -49,9 +44,7 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            //var_dump(' password '.$user->password);
-               // if (!$user || !$user->validatePassword($this->password)) {
-            if($this->user['username'] != $this->username || $this->user['password'] != $this->password){
+            if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
@@ -64,24 +57,12 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-
-            self::createUserSession($this->user['id'] , $this->user['username']);
-
+            $user = $this->getUser();
             if($this->rememberMe)
             {
-                //$user = $this->getUser();
-                //$user->generateAuthKey();
-                $time = time() + 60 * 60 * 24 * 7;
-                $cookie = new \yii\web\Cookie();
-                $cookie -> name = 'mrs_remeber';
-                $cookie -> expire = $time;
-                $cookie -> httpOnly = true;
-                $cookie -> value = base64_encode($this->user['id'] . '#' . $this->user['username'] . '#' .$time);
-                Yii::$app->response->getCookies()->add($cookie);
-                return true;
+                $user->generateAuthKey();
             }
-
-            //return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($user, $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
     }
@@ -94,7 +75,6 @@ class LoginForm extends Model
 
 
     public static function loginByCookie(){
-        //$remCookie = Yii::$app->session->get('mrs_remeber');
         $remCookie = Yii::$app->request->cookies->get('mrs_remeber');
         if($remCookie){
             list($id , $username , $time) = explode('#' , base64_decode($remCookie));
